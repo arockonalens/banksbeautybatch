@@ -225,11 +225,6 @@
 
 <section class="shop">
   <div class="product">
-    <div class="p-head"><h2>Restock</h2><span class="size">In use</span></div>
-    <div class="p-sub">Tick when you're running low. It moves to your to-buy list.</div>
-    <div id="restock"></div>
-  </div>
-  <div class="product">
     <div class="p-head"><h2>Ingredient ideas</h2><span class="size">New</span></div>
     <div class="p-sub">Tick to move to your to-buy list.</div>
     <div id="ideas"></div>
@@ -237,7 +232,7 @@
   </div>
   <div class="product">
     <div class="p-head"><h2>To buy</h2><span class="size" id="buy-count"></span></div>
-    <div class="p-sub">Untick to move it back.</div>
+    <div class="p-sub">Tap <b>Out</b> on any ingredient above to add it here. Untick to remove.</div>
     <div id="tobuy"></div>
     <div class="total"><span>Total</span><span id="buy-total">$0.00</span></div>
     <div class="shop-note" id="buy-note"></div>
@@ -510,7 +505,6 @@ const SHOP = [
     </div>`;
   const list = (items, empty) => items.length ? items.map(row).join("") : `<div class="empty">${empty}</div>`;
   const draw = () => {
-    el("restock").innerHTML = list(SHOP.filter(i => i.g === "r" && !picked[i.id]), "Everything is on your list.");
     el("ideas").innerHTML = list(SHOP.filter(i => i.g === "i" && !picked[i.id]), "Everything is on your list.");
     const b = SHOP.filter(i => picked[i.id]);
     el("tobuy").innerHTML = list(b, "Nothing yet.");
