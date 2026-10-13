@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Banks Beauty Batch Sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f0e4;
+    --card: #fffaf0;
+    --ink: #1a1512;
+    --muted: #4f463c;
+    --line: #e4d9c4;
+    --gold: #7d5e1f;
+    --gold-soft: #f0e3c4;
+    --done: #9a8f80;
+    --warn: #9a4a2e;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17140f;
+      --card: #211d17;
+      --ink: #f7f0e3;
+      --muted: #cbbfac;
+      --line: #3a3229;
+      --gold: #d4ae62;
+      --gold-soft: #3a2f1c;
+      --done: #6d6355;
+      --warn: #e08a68;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #17140f; --card: #211d17; --ink: #f7f0e3; --muted: #cbbfac;
+    --line: #3a3229; --gold: #d4ae62; --gold-soft: #3a2f1c; --done: #6d6355; --warn: #e08a68;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 17px/1.5 Inter, system-ui, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+  header {
+    text-align: center;
+    padding: 32px 16px 8px;
+  }
+  header .brand {
+    font-family: "Special Elite", monospace;
+    letter-spacing: .25em;
+    color: var(--gold);
+    font-size: 13px;
+  }
+  header h1 {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 600;
+    font-size: clamp(30px, 6vw, 44px);
+    margin: 4px 0 6px;
+  }
+  header p { color: var(--muted); margin: 0; font-size: 16px; }
+
+  main {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px 16px 48px;
+  }
+
+  .product {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 20px 18px 18px;
+    position: relative;
+  }
+  .product::before {
+    content: "";
+    position: absolute; inset: 6px;
+    border: 1px solid var(--gold-soft);
+    border-radius: 10px;
+    pointer-events: none;
+  }
+  .product > * { position: relative; }
+  .p-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .p-head h2 {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 32px; margin: 0; font-weight: 600;
+  }
+  .p-head .size { font-weight: 600; color: var(--gold); font-size: 15px; white-space: nowrap; }
+  .p-sub { color: var(--muted); font-size: 15px; margin: 2px 0 14px; }
+
+  .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+  .meta label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); display: block; }
+  .meta input {
+    width: 100%; margin-top: 3px;
+    font: inherit; color: var(--ink);
+    background: var(--bg); border: 1px solid var(--line); border-radius: 8px;
+    padding: 7px 9px;
+  }
+  .meta .useby { font-size: 17px; font-weight: 600; padding-top: 10px; }
+
+  .progress { height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; margin: 6px 0 4px; }
+  .progress span { display: block; height: 100%; width: 0; background: var(--gold); transition: width .25s ease; }
+  .progress-label { font-size: 14px; color: var(--muted); margin-bottom: 10px; }
+
+  .step { margin-top: 20px; }
+  .step-title {
+    font-weight: 700; text-transform: uppercase;
+    font-size: 14px; color: var(--gold);
+    letter-spacing: .06em;
+    display: flex; justify-content: space-between; align-items: center; gap: 8px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 4px; margin-bottom: 2px;
+  }
+  .step-note { font-size: 15px; color: var(--muted); margin: 6px 0 2px; }
+
+  .row {
+    display: grid;
+    grid-template-columns: 28px 1fr auto auto;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 2px;
+    border-bottom: 1px dashed var(--line);
+    cursor: pointer;
+    user-select: none;
+  }
+  .row:last-child { border-bottom: none; }
+  .row input { position: absolute; opacity: 0; pointer-events: none; }
+  .box {
+    width: 26px; height: 26px;
+    border: 2px solid var(--gold);
+    border-radius: 6px;
+    display: grid; place-items: center;
+    transition: background .15s ease;
+  }
+  .box svg { width: 16px; height: 16px; opacity: 0; transform: scale(.6); transition: opacity .15s, transform .15s; }
+  .row.checked .box { background: var(--gold); }
+  .row.checked .box svg { opacity: 1; transform: scale(1); }
+  .name { font-weight: 500; font-size: 17px; }
+  .name small { display: block; font-weight: 400; color: var(--muted); font-size: 14px; margin-top: 1px; }
+  .amt { font-weight: 700; font-size: 17px; text-align: right; white-space: nowrap; }
+  .amt small { display: block; font-weight: 400; color: var(--muted); font-size: 14px; }
+  .row.checked .name, .row.checked .amt { color: var(--done); text-decoration: line-through; text-decoration-color: var(--done); }
+  .row.task .name { font-weight: 400; }
+  .opt { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--gold); border: 1px solid var(--gold); border-radius: 4px; padding: 0 4px; margin-left: 4px; vertical-align: 1px; }
+
+
+  .out {
+    font: 600 12px Inter, sans-serif; letter-spacing: .03em;
+    color: var(--muted); background: transparent;
+    border: 1px solid var(--line); border-radius: 99px;
+    padding: 3px 9px; cursor: pointer; white-space: nowrap;
+  }
+  .out.on { background: var(--warn); border-color: var(--warn); color: var(--card); }
+
+  .timer {
+    font: 600 14px Inter, sans-serif;
+    color: var(--ink); background: var(--gold-soft);
+    border: none; border-radius: 99px; padding: 4px 10px; cursor: pointer;
+  }
+
+  .actions { display: flex; gap: 8px; margin-top: 16px; }
+  .actions button {
+    flex: 1; font: 600 16px Inter, sans-serif;
+    padding: 12px; border-radius: 10px; cursor: pointer;
+    border: 1px solid var(--gold);
+  }
+  .btn-log { background: var(--gold); color: var(--card); }
+  .btn-reset { background: transparent; color: var(--ink); }
+
+  .notes { width: 100%; margin-top: 12px; min-height: 54px; font: inherit; font-size: 14px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 9px; resize: vertical; font-size: 16px; }
+
+  details.history { margin-top: 14px; font-size: 15px; }
+  details.history summary { cursor: pointer; color: var(--muted); }
+  .hist-item { padding: 8px 0; border-bottom: 1px dashed var(--line); }
+  .hist-item b { font-weight: 600; }
+  .hist-item .expired { color: var(--warn); }
+  .hist-item p { margin: 2px 0 0; color: var(--muted); }
+
+
+  .shop {
+    max-width: 1100px; margin: 0 auto 40px; padding: 0 16px;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px;
+  }
+  .shop .product h2 { font-size: 28px; }
+  .buy-row {
+    display: grid; grid-template-columns: 22px 1fr auto; gap: 10px; align-items: center;
+    padding: 11px 2px; border-bottom: 1px dashed var(--line); cursor: pointer; user-select: none;
+  }
+  .buy-row:last-child { border-bottom: none; }
+  .buy-row .box { width: 20px; height: 20px; border-width: 1.5px; border-radius: 5px; }
+  .buy-row .box svg { width: 12px; height: 12px; }
+  .buy-row.on .box { background: var(--gold); }
+  .buy-row.on .box svg { opacity: 1; transform: scale(1); }
+  .buy-row .name small a { color: var(--gold); }
+  .buy-row.oos .name { color: var(--muted); }
+  .price { font-weight: 700; font-size: 17px; text-align: right; white-space: nowrap; }
+  .price small { display: block; font-weight: 400; color: var(--muted); font-size: 13px; }
+  .total { display: flex; justify-content: space-between; align-items: baseline; border-top: 2px solid var(--gold); margin-top: 10px; padding-top: 10px; font-weight: 700; font-size: 20px; }
+  .empty { color: var(--muted); font-size: 15px; padding: 10px 0; }
+  .shop-note { color: var(--muted); font-size: 13px; margin-top: 10px; }
+
+  footer { text-align: center; color: var(--muted); font-size: 15px; padding: 0 16px 32px; }
+
+  @media print {
+    body { background: #fff; }
+    .actions, .timer, details.history, .progress, .progress-label { display: none; }
+    main { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">BANKS BEAUTY</div>
+  <h1>Batch Sheet</h1>
+  <p>Tap each line as you add it. Your ticks are saved on this device.</p>
+</header>
+
+<main id="products"></main>
+
+<section class="shop">
+  <div class="product">
+    <div class="p-head"><h2>Restock</h2><span class="size">In use</span></div>
+    <div class="p-sub">Tick when you're running low. It moves to your to-buy list.</div>
+    <div id="restock"></div>
+  </div>
+  <div class="product">
+    <div class="p-head"><h2>Ingredient ideas</h2><span class="size">New</span></div>
+    <div class="p-sub">Tick to move to your to-buy list.</div>
+    <div id="ideas"></div>
+    <div class="shop-note">Not stocked at Escentials: zinc PCA, azelaic acid, pH strips.</div>
+  </div>
+  <div class="product">
+    <div class="p-head"><h2>To buy</h2><span class="size" id="buy-count"></span></div>
+    <div class="p-sub">Untick to move it back.</div>
+    <div id="tobuy"></div>
+    <div class="total"><span>Total</span><span id="buy-total">$0.00</span></div>
+    <div class="shop-note" id="buy-note"></div>
+    <div class="shop-note">Escentials prices for the smallest size, checked 13 Oct 2026. Confirm at checkout.</div>
+  </div>
+</section>
+
+<footer>Sanitise spoons and bottles with 70% alcohol first · 1 tsp = 5 ml · Level every spoon · No 1/16 spoon? Use two 1/32</footer>
+
+<script>
+const PRODUCTS = [
+  {
+    id: "serum",
+    name: "Serum",
+    size: "30 ml",
+    sub: "Hydrating, soothing serum for sensitive, acne-prone skin",
+    steps: [
+      { title: "Step 1 · Small cup", note: "Stir until smooth with no clumps.", items: [
+        { name: "Vegetable glycerin", buy: "glycerin", amt: "⅛ tsp", hint: "For thicker: ⅛ + 1/32" },
+        { name: "NATURAGARD ECT", buy: "naturagard", amt: "1/16 tsp" },
+        { name: "HA LMW powder", buy: "halmw", amt: "1/32 tsp", hint: "Level. For thicker: 1/16" }
+      ]},
+      { title: "Step 2 · Water", note: "Whisk the Step 1 mix into the waters.", items: [
+        { name: "Rose water", buy: "rose", amt: "3 tsp", ml: "15 ml" },
+        { name: "Chamomile hydrosol", buy: "chamhyd", amt: "2 tsp + ½", ml: "12.5 ml", hint: "Roman, Anthemis nobilis" },
+        { task: true, name: "Rest 30 minutes for the HA to thicken", timer: 30 }
+      ]},
+      { title: "Step 3 · Powders", note: "Stir until clear.", items: [
+        { name: "Niacinamide powder", buy: "niacin", amt: "¼ + ⅛ tsp", hint: "Level" },
+        { name: "Panthenol powder", buy: "panthenol", amt: "1/16 tsp", hint: "Level" },
+        { name: "Aloe powder 200:1", buy: "aloe", amt: "1/32 tsp", hint: "Level" },
+        { name: "Alpha arbutin", buy: "arbutin", amt: "⅛ + 1/32 tsp", hint: "Once purchased. Brightening, fades marks", optional: true }
+      ]},
+      { title: "Step 4 · Liquids", items: [
+        { name: "Hydrolysed HA liquid", buy: "hahyd", amt: "⅛ tsp" },
+        { name: "Pea protein", buy: "pea", amt: "⅛ tsp" },
+        { name: "Jojoba protein", buy: "jojprot", amt: "⅛ tsp" },
+        { name: "CitruStem", buy: "citrustem", amt: "⅛ tsp" },
+        { name: "Licorice root extract", buy: "licorice", amt: "⅛ tsp", hint: "Once purchased. Calms redness, brightens", optional: true }
+      ]},
+      { title: "Step 5 · Preservative", items: [
+        { name: "Leucidal SF Complete", buy: "leucidal", amt: "⅛ + 1/16 tsp" }
+      ]}
+    ]
+  },
+  {
+    id: "dayoil",
+    name: "Day Oil",
+    size: "30 ml",
+    sub: "Light barrier oil for sensitive, acne-prone skin",
+    steps: [
+      { title: "Oils · Biggest first", items: [
+        { name: "Jojoba oil", buy: "jojoba", amt: "2 tsp + ½ + ¼", ml: "13.75 ml" },
+        { name: "Hemisqualane", buy: "hemisq", amt: "1 tsp", ml: "5 ml" },
+        { name: "Tamanu oil", buy: "tamanu", amt: "½ + ¼ tsp", ml: "3.75 ml" },
+        { name: "Argan oil", buy: "argan", amt: "½ tsp", ml: "2.5 ml" },
+        { name: "Evening primrose oil", buy: "epo", amt: "½ tsp", ml: "2.5 ml" },
+        { name: "Kiwi seed oil", buy: "kiwi", amt: "¼ tsp", ml: "1.25 ml" },
+        { name: "Sea buckthorn oil", buy: "seabuck", amt: "1/16 tsp" },
+        { name: "Bakuchiol", buy: "bakuchiol", amt: "1/16 tsp" },
+        { name: "Vitamin E", buy: "vite", amt: "1/16 tsp" }
+      ]},
+      { title: "Extras", items: [
+        { name: "Blue chamomile essential oil", buy: "bluecham", amt: "2 drops", hint: "German, Matricaria" },
+        { name: "Carrot seed essential oil", buy: "carrot", amt: "1 drop", optional: true },
+        { name: "Pearl powder (micronised)", buy: "pearl", amt: "1/32 tsp" }
+      ]}
+    ]
+  },
+  {
+    id: "nightoil",
+    name: "Night Oil",
+    size: "30 ml",
+    sub: "Richer repair oil for sensitive, acne-prone skin",
+    steps: [
+      { title: "Oils · Biggest first", items: [
+        { name: "Jojoba oil", buy: "jojoba", amt: "2 tsp", ml: "10 ml" },
+        { name: "Rosehip oil", buy: "rosehip", amt: "1 tsp", ml: "5 ml" },
+        { name: "Tamanu oil", buy: "tamanu", amt: "½ + ¼ tsp", ml: "3.75 ml" },
+        { name: "Argan oil", buy: "argan", amt: "½ + ¼ tsp", ml: "3.75 ml" },
+        { name: "Evening primrose oil", buy: "epo", amt: "½ + ¼ tsp", ml: "3.75 ml" },
+        { name: "Cacay oil", buy: "cacay", amt: "½ tsp", ml: "2.5 ml" },
+        { name: "Sea buckthorn oil", buy: "seabuck", amt: "1/16 tsp" },
+        { name: "Bakuchiol", buy: "bakuchiol", amt: "1/16 tsp" },
+        { name: "Vitamin E (T50)", buy: "vite", amt: "1/16 tsp" }
+      ]},
+      { title: "Extras", items: [
+        { name: "Frankincense essential oil", buy: "frank", amt: "2 drops" },
+        { name: "Helichrysum essential oil", buy: "heli", amt: "1 drop" }
+      ]}
+    ]
+  }
+];
+
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+};
+
+const tick = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="color:var(--card)"><path d="M3 8.5l3.2 3L13 4.5"/></svg>';
+const iso = x => `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, "0")}-${String(x.getDate()).padStart(2, "0")}`;
+const today = () => iso(new Date());
+const fmt = d => new Date(d + "T00:00").toLocaleDateString("en-AU", { day: "numeric", month: "short", year: "numeric" });
+const addMonths = (d, m) => { const x = new Date(d + "T00:00"); x.setMonth(x.getMonth() + m); return iso(x); };
+
+function render(p) {
+  const state = store.get("bb-" + p.id, { checked: {}, date: today(), batch: "", notes: "" });
+  const history = store.get("bb-hist-" + p.id, []);
+  const el = document.createElement("section");
+  el.className = "product";
+
+  let total = 0, html = "";
+  p.steps.forEach((s, si) => {
+    html += `<div class="step"><div class="step-title"><span>${s.title}</span></div>`;
+    if (s.note) html += `<div class="step-note">${s.note}</div>`;
+    s.items.forEach((it, ii) => {
+      const key = si + "-" + ii;
+      total++;
+      const on = !!state.checked[key];
+      html += `<label class="row ${it.task ? "task" : ""} ${on ? "checked" : ""}" data-key="${key}">
+        <input type="checkbox" ${on ? "checked" : ""}>
+        <span class="box">${tick}</span>
+        <span class="name">${it.name}${it.optional ? '<span class="opt">optional</span>' : ""}${it.hint ? `<small>${it.hint}</small>` : ""}</span>
+        ${it.buy ? `<button class="out" type="button" data-buy="${it.buy}" title="Ran out? Add to to-buy list">Out</button>` : "<span></span>"}
+        <span class="amt">${it.timer ? `<button class="timer" type="button" data-min="${it.timer}">Start ${it.timer} min</button>` : (it.amt || "")}${it.ml ? `<small>${it.ml}</small>` : ""}</span>
+      </label>`;
+    });
+    html += `</div>`;
+  });
+
+  el.innerHTML = `
+    <div class="p-head"><h2>${p.name}</h2><span class="size">${p.size}</span></div>
+    <div class="p-sub">${p.sub}</div>
+    <div class="meta">
+      <div><label>Batch date</label><input type="date" class="f-date" value="${state.date}"></div>
+      <div><label>Use by</label><div class="useby"></div></div>
+    </div>
+    <div class="progress"><span></span></div>
+    <div class="progress-label"></div>
+    ${html}
+    <textarea class="notes" placeholder="Batch notes (texture, smell, how your skin reacted)">${state.notes || ""}</textarea>
+    <div class="actions">
+      <button class="btn-reset" type="button">Clear ticks</button>
+      <button class="btn-log" type="button">Log batch</button>
+    </div>
+    <details class="history"><summary>Batch history (${history.length})</summary><div class="hist"></div></details>
+  `;
+
+  const save = () => store.set("bb-" + p.id, state);
+  const update = () => {
+    const done = Object.values(state.checked).filter(Boolean).length;
+    el.querySelector(".progress span").style.width = (done / total * 100) + "%";
+    el.querySelector(".progress-label").textContent = done === total ? "All done ✓" : `${done} of ${total} done`;
+    el.querySelector(".useby").textContent = fmt(addMonths(state.date, 3));
+  };
+  const drawHistory = () => {
+    const h = store.get("bb-hist-" + p.id, []);
+    el.querySelector(".history summary").textContent = `Batch history (${h.length})`;
+    el.querySelector(".hist").innerHTML = h.length ? h.map(b => {
+      const exp = addMonths(b.date, 3);
+      const gone = exp < today();
+      return `<div class="hist-item"><b>${fmt(b.date)}</b> · <span class="${gone ? "expired" : ""}">use by ${fmt(exp)}${gone ? " (expired)" : ""}</span>${b.notes ? `<p>${b.notes.replace(/</g, "&lt;")}</p>` : ""}</div>`;
+    }).join("") : `<div class="hist-item"><p>No batches logged yet.</p></div>`;
+  };
+
+  el.querySelectorAll(".row").forEach(row => {
+    row.addEventListener("click", e => {
+      if (e.target.closest(".timer")) return;
+      if (e.target.closest(".out")) { e.preventDefault(); window.shopToggle(e.target.closest(".out").dataset.buy); return; }
+      e.preventDefault();
+      const k = row.dataset.key;
+      state.checked[k] = !state.checked[k];
+      row.classList.toggle("checked", state.checked[k]);
+      save(); update();
+    });
+  });
+
+  el.querySelectorAll(".timer").forEach(btn => {
+    let t = null;
+    btn.addEventListener("click", e => {
+      e.preventDefault(); e.stopPropagation();
+      if (t) { clearInterval(t); t = null; btn.textContent = `Start ${btn.dataset.min} min`; return; }
+      const end = Date.now() + btn.dataset.min * 60000;
+      const tickT = () => {
+        const left = Math.max(0, end - Date.now());
+        const m = Math.floor(left / 60000), s = Math.floor(left / 1000) % 60;
+        btn.textContent = left ? `${m}:${String(s).padStart(2, "0")} · stop` : "Done ✓";
+        if (!left) { clearInterval(t); t = null; try { navigator.vibrate && navigator.vibrate([300, 150, 300]); } catch (e) {} }
+      };
+      tickT(); t = setInterval(tickT, 1000);
+    });
+  });
+
+  el.querySelector(".f-date").addEventListener("change", e => { state.date = e.target.value || today(); save(); update(); });
+  el.querySelector(".notes").addEventListener("input", e => { state.notes = e.target.value; save(); });
+
+  el.querySelector(".btn-reset").addEventListener("click", () => {
+    state.checked = {};
+    el.querySelectorAll(".row").forEach(r => r.classList.remove("checked"));
+    save(); update();
+  });
+
+  el.querySelector(".btn-log").addEventListener("click", () => {
+    const h = store.get("bb-hist-" + p.id, []);
+    h.unshift({ date: state.date, notes: state.notes });
+    store.set("bb-hist-" + p.id, h);
+    state.checked = {}; state.notes = ""; state.date = today();
+    el.querySelectorAll(".row").forEach(r => r.classList.remove("checked"));
+    el.querySelector(".notes").value = "";
+    el.querySelector(".f-date").value = state.date;
+    save(); update(); drawHistory();
+    el.querySelector(".history").open = true;
+  });
+
+  update(); drawHistory();
+  return el;
+}
+
+const root = document.getElementById("products");
+PRODUCTS.forEach(p => root.appendChild(render(p)));
+
+const SHOP = [
+  // Restock: ingredients in use
+  { g: "r", id: "glycerin",  name: "Glycerine", size: "500 g", price: 9.00, forP: "Serum", url: "productid49" },
+  { g: "r", id: "naturagard",name: "NATURAGARD Liquid (ECT)", size: "100 ml", price: 25.00, forP: "Serum", url: "naturagard-ect", oos: true },
+  { g: "r", id: "halmw",     name: "Hyaluronic Acid Powder LMW", size: "25 g", price: 36.00, forP: "Serum", url: "hyaluronic-acid-powder-lmw" },
+  { g: "r", id: "rose",      name: "Rose Hydrosol", size: "100 ml", price: 6.00, forP: "Serum", url: "productid675" },
+  { g: "r", id: "chamhyd",   name: "Chamomile Hydrosol", size: "100 ml", price: 6.00, forP: "Serum", url: "chamomile-hydrosol-organic" },
+  { g: "r", id: "niacin",    name: "Niacinamide (Vitamin B3)", size: "100 g", price: 14.00, forP: "Serum", url: "productid988" },
+  { g: "r", id: "panthenol", name: "Panthenol Powder (B5)", size: "100 g", price: 14.00, forP: "Serum", url: "productid875" },
+  { g: "r", id: "aloe",      name: "Aloe Vera Powder Organic", size: "25 g", price: 26.00, forP: "Serum · check it's 200:1", url: "productid784" },
+  { g: "r", id: "hahyd",     name: "Hydrolysed Hyaluronic Acid", size: "50 ml", price: 23.00, forP: "Serum", url: "productid1033" },
+  { g: "r", id: "pea",       name: "Pea Protein Peptide", size: "50 ml", price: 18.00, forP: "Serum", url: "pea-protein-peptide" },
+  { g: "r", id: "jojprot",   name: "Jojoba Protein Hydrolised", size: "50 ml", price: 16.00, forP: "Serum", url: "productid1602" },
+  { g: "r", id: "citrustem", name: "CitruStem", size: "", price: null, forP: "Serum", url: null },
+  { g: "r", id: "leucidal",  name: "Leucidal SF Complete", size: "50 ml", price: 17.00, forP: "Serum", url: "leucidal-sf-complete" },
+  { g: "r", id: "jojoba",    name: "Jojoba Oil Organic", size: "50 ml", price: 9.90, forP: "Day + night oil", url: "productid972" },
+  { g: "r", id: "hemisq",    name: "Hemisqualane", size: "50 ml", price: 10.00, forP: "Day oil", url: "hemisqualane-clear" },
+  { g: "r", id: "tamanu",    name: "Tamanu Oil Organic", size: "100 ml", price: 19.00, forP: "Day + night oil", url: "productid1715" },
+  { g: "r", id: "argan",     name: "Argan Oil", size: "", price: null, forP: "Day + night oil", url: null },
+  { g: "r", id: "epo",       name: "Evening Primrose Oil", size: "100 ml", price: 13.50, forP: "Day + night oil", url: "productid864" },
+  { g: "r", id: "kiwi",      name: "Kiwi Seed Oil", size: "50 ml", price: 23.40, forP: "Day oil", url: "productid1299" },
+  { g: "r", id: "seabuck",   name: "Seabuckthorn Seed Oil", size: "50 ml", price: 14.00, forP: "Day + night oil · seed is less orange than fruit", url: "productid1028" },
+  { g: "r", id: "bakuchiol", name: "Bakuchiol (pure, filtered)", size: "5 ml", price: 46.00, forP: "Day + night oil · not the 1% in squalane", url: "bakuchiol-oil-light" },
+  { g: "r", id: "vite",      name: "Vitamin E Natural T50", size: "50 ml", price: 16.50, forP: "Day + night oil", url: "productid74" },
+  { g: "r", id: "bluecham",  name: "Chamomile Blue Essential Oil", size: "5 ml", price: 19.00, forP: "Day oil", url: "productid372" },
+  { g: "r", id: "carrot",    name: "Carrot Seed Essential Oil", size: "18 ml", price: 11.00, forP: "Day oil", url: "productid365" },
+  { g: "r", id: "pearl",     name: "Pearl Powder", size: "25 g", price: 38.00, forP: "Day oil", url: "productid1633" },
+  { g: "r", id: "rosehip",   name: "Rosehip Seed Oil Virgin", size: "100 ml", price: 17.00, forP: "Night oil", url: "rosehip-virgin" },
+  { g: "r", id: "cacay",     name: "Cacay Oil", size: "50 ml", price: 20.00, forP: "Night oil", url: "cacay-oil" },
+  { g: "r", id: "frank",     name: "Frankincense Essential Oil", size: "18 ml", price: 9.60, forP: "Night oil", url: "frankincense-essential-oil-india" },
+  { g: "r", id: "heli",      name: "Helichrysum Essential Oil", size: "18 ml", price: 17.00, forP: "Night oil", url: "productid948" },
+  // Ideas: new ingredients
+  { g: "i", id: "arbutin",  name: "Alpha Arbutin Powder", size: "5 g",   price: 23.00, forP: "Serum · brightening, fades marks", url: "productid1634" },
+  { g: "i", id: "licorice", name: "Licorice Root Extract", size: "50 ml", price: 9.00,  forP: "Serum · calms redness, brightens", url: "licorice-root-extract" },
+  { g: "i", id: "hmwha",    name: "Hyaluronic Acid Powder HMW", size: "25 g", price: 24.00, forP: "Serum · thicker, silky texture", url: "hyaluronic-powder-gelling" },
+  { g: "i", id: "allantoin",name: "Allantoin Powder", size: "50 g", price: 15.00, forP: "Serum · soothing", url: "productid974" },
+  { g: "i", id: "gotukola", name: "Gotu Kola (Centella) Extract", size: "50 ml", price: 9.00, forP: "Serum · soothes redness, barrier", url: "productid1397", oos: true },
+  { g: "i", id: "thdc",     name: "Vitamin C (THD Ascorbate)", size: "5 ml", price: 17.00, forP: "Night oil · oil-soluble vitamin C", url: "vitamin-c-tetrahexyldecylascorbate" },
+  { g: "i", id: "prickly",  name: "Prickly Pear Oil", size: "50 ml", price: 24.00, forP: "Night oil · light, brightening", url: "prickly-pear-oil" }
+];
+
+(function shop() {
+  const picked = store.get("bb-buy", {});
+  const el = id => document.getElementById(id);
+  const row = it => `<div class="buy-row ${picked[it.id] ? "on" : ""} ${it.oos ? "oos" : ""}" data-id="${it.id}">
+      <span class="box">${tick}</span>
+      <span class="name">${it.name}<small>${it.forP}${it.url ? ` · <a href="https://www.escentialsofaustralia.com/products/${it.url}" target="_blank" rel="noopener">view</a>` : ""}</small></span>
+      <span class="price">${it.price == null ? "—" : "$" + it.price.toFixed(2)}<small>${it.price == null ? "not at Escentials" : it.oos ? "out of stock" : it.size}</small></span>
+    </div>`;
+  const list = (items, empty) => items.length ? items.map(row).join("") : `<div class="empty">${empty}</div>`;
+  const draw = () => {
+    el("restock").innerHTML = list(SHOP.filter(i => i.g === "r" && !picked[i.id]), "Everything is on your list.");
+    el("ideas").innerHTML = list(SHOP.filter(i => i.g === "i" && !picked[i.id]), "Everything is on your list.");
+    const b = SHOP.filter(i => picked[i.id]);
+    el("tobuy").innerHTML = list(b, "Nothing yet.");
+    el("buy-total").textContent = "$" + b.reduce((t, i) => t + (i.price || 0), 0).toFixed(2);
+    el("buy-count").textContent = b.length ? b.length + (b.length === 1 ? " item" : " items") : "";
+    const na = b.filter(i => i.price == null).map(i => i.name);
+    document.querySelectorAll(".out").forEach(o => { const on = !!picked[o.dataset.buy]; o.classList.toggle("on", on); o.textContent = on ? "On list" : "Out"; });
+    el("buy-note").textContent = na.length ? "Not included in total (buy elsewhere): " + na.join(", ") : "";
+  };
+  window.shopToggle = id => {
+    if (picked[id]) delete picked[id]; else picked[id] = true;
+    store.set("bb-buy", picked); draw();
+  };
+  document.querySelector(".shop").addEventListener("click", e => {
+    if (e.target.closest("a")) return;
+    const r = e.target.closest(".buy-row"); if (!r) return;
+    window.shopToggle(r.dataset.id);
+  });
+  draw();
+})();
+
+</script>
+</body>
+</html>
