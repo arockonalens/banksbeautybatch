@@ -234,10 +234,10 @@
 
 <section class="shop">
   <div class="product">
-    <div class="p-head"><h2>Ingredient ideas</h2><span class="size">New</span></div>
-    <div class="p-sub">Tick to move to your to-buy list.</div>
+    <div class="p-head"><h2>Still to buy</h2><span class="size">For these recipes</span></div>
+    <div class="p-sub">In the recipes but not bought yet. Tick to move to your to-buy list.</div>
     <div id="ideas"></div>
-    <div class="shop-note">Not stocked at Escentials: zinc PCA, azelaic acid, pH strips.</div>
+    <div class="shop-note">Also get pH strips (pharmacy or eBay) — Escentials doesn't sell them.</div>
   </div>
   <div class="product">
     <div class="p-head"><h2>To buy</h2><span class="size" id="buy-count"></span></div>
@@ -260,14 +260,12 @@ const PRODUCTS = [
     sub: "Gentle AHA toner for sensitive, acne-prone skin",
     steps: [
       { title: "Step 1 · Base", items: [
-        { name: "Rose water", buy: "rose", amt: "2 tsp + 1/16", ml: "10.3 ml" },
-        { name: "Chamomile hydrosol", buy: "chamhyd", amt: "1 tsp + ½", ml: "7.5 ml" },
-        { name: "Cucumber hydrosol", buy: "cucumber", amt: "1 tsp + ¼", ml: "6.25 ml", hint: "Once purchased. Until then use rose water", optional: true }
+        { name: "Rose water", buy: "rose", amt: "3 tsp", ml: "15 ml" },
+        { name: "Chamomile hydrosol", buy: "chamhyd", amt: "2 tsp", ml: "10 ml" }
       ]},
       { title: "Step 2 · Extracts", items: [
-        { name: "Green tea extract", buy: "greentea", amt: "¼ tsp", hint: "Once purchased", optional: true },
-        { name: "Licorice root extract", buy: "licorice", amt: "⅛ tsp", hint: "Once purchased", optional: true },
-        { name: "Gotu kola extract", buy: "gotukola", amt: "⅛ tsp", hint: "Once purchased (out of stock)", optional: true },
+        { name: "Green tea extract", buy: "greentea", amt: "⅛ + 1/16 tsp", hint: "Need to buy", need: true },
+        { name: "Gotu kola extract", buy: "gotukola", amt: "⅛ tsp", hint: "Need to buy (out of stock)", need: true },
         { name: "Kakadu plum extract", buy: "kakadu", amt: "⅛ tsp" },
         { name: "Horse chestnut extract", buy: "horsechest", amt: "⅛ tsp" },
         { name: "AHA PhytoFruit Mix", buy: "aha", amt: "⅛ + 1/16 tsp", hint: "≈1.5% AHA. Gentle exfoliant" }
@@ -288,7 +286,7 @@ const PRODUCTS = [
         { name: "Vegetable glycerin", buy: "glycerin", amt: "⅛ + 1/32 tsp" },
         { name: "NATURAGARD ECT", buy: "naturagard", amt: "1/16 tsp" },
         { name: "HA LMW powder", buy: "halmw", amt: "1/16 tsp", hint: "Level" },
-        { name: "HA HMW powder", buy: "hmwha", amt: "1/32 tsp", hint: "Once purchased. Gives the silky gel texture", optional: true }
+        { name: "HA HMW powder", buy: "hmwha", amt: "1/32 tsp", hint: "Need to buy. Gives the silky gel texture", need: true }
       ]},
       { title: "Step 2 · Water", note: "Whisk the Step 1 mix into the waters.", items: [
         { name: "Rose water", buy: "rose", amt: "3 tsp", ml: "15 ml" },
@@ -299,14 +297,14 @@ const PRODUCTS = [
         { name: "Niacinamide powder", buy: "niacin", amt: "¼ + ⅛ tsp", hint: "Level" },
         { name: "Panthenol powder", buy: "panthenol", amt: "1/16 tsp", hint: "Level" },
         { name: "Aloe powder 200:1", buy: "aloe", amt: "1/32 tsp", hint: "Level" },
-        { name: "Alpha arbutin", buy: "arbutin", amt: "⅛ + 1/32 tsp", hint: "Once purchased. Brightening, fades marks", optional: true }
+        { name: "Alpha arbutin", buy: "arbutin", amt: "⅛ + 1/32 tsp", hint: "Need to buy. Brightening, fades marks", need: true }
       ]},
       { title: "Step 4 · Liquids", items: [
         { name: "Hydrolysed HA liquid", buy: "hahyd", amt: "⅛ tsp" },
         { name: "Pea protein", buy: "pea", amt: "⅛ tsp" },
         { name: "Jojoba protein", buy: "jojprot", amt: "⅛ tsp" },
         { name: "CitruStem", buy: "citrustem", amt: "⅛ tsp" },
-        { name: "Licorice root extract", buy: "licorice", amt: "⅛ tsp", hint: "Once purchased. Calms redness, brightens", optional: true }
+        { name: "Licorice root extract", buy: "licorice", amt: "⅛ tsp", hint: "Need to buy. Calms redness, brightens", need: true }
       ]},
       { title: "Step 5 · Preservative", items: [
         { name: "Leucidal SF Complete", buy: "leucidal", amt: "⅛ + 1/16 tsp" }
@@ -358,7 +356,6 @@ const PRODUCTS = [
       ]},
       { title: "Extras", items: [
         { name: "Blue chamomile essential oil", buy: "bluecham", amt: "2 drops", hint: "German, Matricaria" },
-        { name: "Carrot seed essential oil", buy: "carrot", amt: "1 drop", optional: true },
         { name: "Pearl powder (micronised)", buy: "pearl", amt: "1/32 tsp" }
       ]}
     ]
@@ -416,7 +413,7 @@ function render(p) {
       html += `<label class="row ${it.task ? "task" : ""} ${on ? "checked" : ""}" data-key="${key}">
         <input type="checkbox" ${on ? "checked" : ""}>
         <span class="box">${tick}</span>
-        <span class="name">${it.name}${it.optional ? '<span class="opt">optional</span>' : ""}${it.hint ? `<small>${it.hint}</small>` : ""}</span>
+        <span class="name">${it.name}${it.optional ? '<span class="opt">optional</span>' : ""}${it.need ? '<span class="opt">buy</span>' : ""}${it.hint ? `<small>${it.hint}</small>` : ""}</span>
         <span class="amt">${it.timer ? `<button class="timer" type="button" data-min="${it.timer}">Start ${it.timer} min</button>` : (it.amt || "")}${it.ml ? `<small>${it.ml}</small>` : ""}${it.buy ? `<button class="out" type="button" data-buy="${it.buy}" title="Ran out? Add to to-buy list">Out</button>` : ""}</span>
       </label>`;
     });
@@ -552,14 +549,10 @@ const SHOP = [
   { g: "r", id: "heli",      name: "Helichrysum Essential Oil", size: "18 ml", price: 17.00, forP: "Night oil", url: "productid948" },
   // Ideas: new ingredients
   { g: "i", id: "arbutin",  name: "Alpha Arbutin Powder", size: "5 g",   price: 23.00, forP: "Serum · brightening, fades marks", url: "productid1634" },
-  { g: "i", id: "licorice", name: "Licorice Root Extract", size: "50 ml", price: 9.00,  forP: "Serum + toner · calms redness, brightens", url: "licorice-root-extract" },
+  { g: "i", id: "licorice", name: "Licorice Root Extract", size: "50 ml", price: 9.00,  forP: "Serum · calms redness, brightens", url: "licorice-root-extract" },
   { g: "i", id: "greentea", name: "Green Tea Extract Organic", size: "50 ml", price: 9.00, forP: "Toner · antioxidant, calms breakouts", url: "productid997" },
-  { g: "i", id: "cucumber", name: "Cucumber Hydrosol Organic", size: "100 ml", price: 8.00, forP: "Toner · soothing base", url: "cucumber-hydrosol" },
   { g: "i", id: "hmwha",    name: "Hyaluronic Acid Powder HMW", size: "25 g", price: 24.00, forP: "Serum · thicker, silky texture", url: "hyaluronic-powder-gelling" },
-  { g: "i", id: "allantoin",name: "Allantoin Powder", size: "50 g", price: 15.00, forP: "Serum · soothing", url: "productid974" },
-  { g: "i", id: "gotukola", name: "Gotu Kola (Centella) Extract", size: "50 ml", price: 9.00, forP: "Serum + toner · soothes redness, barrier", url: "productid1397", oos: true },
-  { g: "i", id: "thdc",     name: "Vitamin C (THD Ascorbate)", size: "5 ml", price: 17.00, forP: "Night oil · oil-soluble vitamin C", url: "vitamin-c-tetrahexyldecylascorbate" },
-  { g: "i", id: "prickly",  name: "Prickly Pear Oil", size: "50 ml", price: 24.00, forP: "Night oil · light, brightening", url: "prickly-pear-oil" }
+  { g: "i", id: "gotukola", name: "Gotu Kola (Centella) Extract", size: "50 ml", price: 9.00, forP: "Toner · soothes redness, barrier", url: "productid1397", oos: true },
 ];
 
 (function shop() {
