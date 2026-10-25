@@ -295,7 +295,7 @@ const PRODUCTS = [
       ]},
       { title: "Step 3 · Powders", note: "Stir until clear.", items: [
         { name: "Niacinamide powder", buy: "niacin", amt: "¼ + ⅛ tsp", hint: "Level" },
-        { name: "Panthenol powder", buy: "panthenol", amt: "1/16 tsp", hint: "Level" },
+        { name: "Panthenol powder", buy: "panthenol", amt: "1/16 tsp", hint: "Need to buy. Level", need: true },
         { name: "Aloe powder 200:1", buy: "aloe", amt: "1/32 tsp", hint: "Level" },
         { name: "Alpha arbutin", buy: "arbutin", amt: "⅛ + 1/32 tsp", hint: "Need to buy. Brightening, fades marks", need: true }
       ]},
@@ -327,7 +327,7 @@ const PRODUCTS = [
         { task: true, name: "Rest 30 minutes for the HA to thicken", timer: 30 }
       ]},
       { title: "Step 3 · Powders", note: "Dissolves to clear pale blue.", items: [
-        { name: "Panthenol powder", buy: "panthenol", amt: "1/16 tsp", hint: "Level" },
+        { name: "Panthenol powder", buy: "panthenol", amt: "1/16 tsp", hint: "Need to buy. Level", need: true },
         { name: "Copper tripeptide", buy: "copper", amt: "1/32 tsp", hint: "Level. ~0.2%" }
       ]},
       { title: "Step 4 · Liquids", items: [
@@ -519,7 +519,7 @@ const SHOP = [
   { g: "r", id: "rose",      name: "Rose Hydrosol", size: "100 ml", price: 6.00, forP: "Serum", url: "productid675" },
   { g: "r", id: "chamhyd",   name: "Chamomile Hydrosol", size: "100 ml", price: 6.00, forP: "Serum", url: "chamomile-hydrosol-organic" },
   { g: "r", id: "niacin",    name: "Niacinamide (Vitamin B3)", size: "100 g", price: 14.00, forP: "Serum", url: "productid988" },
-  { g: "r", id: "panthenol", name: "Panthenol Powder (B5)", size: "100 g", price: 14.00, forP: "Serum", url: "productid875" },
+  { g: "i", id: "panthenol", name: "Panthenol Powder (B5)", size: "100 g", price: 14.00, forP: "Serum + copper serum · soothing, barrier repair", url: "productid875" },
   { g: "r", id: "aloe",      name: "Aloe Vera Powder Organic", size: "25 g", price: 26.00, forP: "Serum · check it's 200:1", url: "productid784" },
   { g: "r", id: "hahyd",     name: "Hydrolysed Hyaluronic Acid", size: "50 ml", price: 23.00, forP: "Serum", url: "productid1033" },
   { g: "r", id: "pea",       name: "Pea Protein Peptide", size: "50 ml", price: 18.00, forP: "Serum", url: "pea-protein-peptide" },
